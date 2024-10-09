@@ -22,7 +22,7 @@ LRESULT CALLBACK WindowMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
             Vertex2D tri[3] = {
                 {.x = 10.0f, .y = 15.0f},
-                {.x = 100.0f, .y = 120.0f},
+                {.x = 230.0f, .y = 120.0f},
                 {.x = 20.0f, .y = 170.0f}
             };
 
@@ -30,12 +30,31 @@ LRESULT CALLBACK WindowMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
             GetClientRect(hwnd, &client_rect);
 
-            int client_width = client_rect.right - client_rect.left;
-            int client_height = client_rect.bottom - client_rect.top;
+            Vertex2DTransform v2d_trans = {
+                .trans_type = World2Screen,
+                .trans_arg = {
+                    .w2s = {
+                        .world_x_max = 200.0f,
+                        .world_x_min = -200.0f,
+                        .world_y_max = 200.0f,
+                        .world_y_min = -200.0f,
+                        .screen_width = client_rect.right - client_rect.left,
+                        .screen_height = client_rect.bottom - client_rect.top
+                    }
+                }
+            };
 
-            fprintf(stdout, "client_width: %d, client_height: %d\n", client_width, client_height);
+            fprintf(stdout, "client_width: %d, client_height: %d\n",
+                v2d_trans.trans_arg.w2s.screen_width, v2d_trans.trans_arg.w2s.screen_height);
 
-            switch (RenderPaintPure2DTriangle(tri, RGB(0, 0, 0), hdc, client_width, client_height)) {
+            TriVertices2DTransform(tri, &v2d_trans);
+
+            fprintf(stdout, "tri: [(%f,%f), (%f,%f), (%f,%f)]\n",
+                tri[0].x, tri[0].y,
+                tri[1].x, tri[1].y,
+                tri[2].x, tri[2].y);
+
+            switch (RenderPaintPure2DTriangle(tri, RGB(0, 0, 0), hdc, v2d_trans.trans_arg.w2s.screen_width, v2d_trans.trans_arg.w2s.screen_height)) {
                 case RDRPAINT_SUC:
                     fprintf(stdout, "triangle paint success\n");
                 break;

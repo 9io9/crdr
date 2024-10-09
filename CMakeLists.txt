@@ -11,7 +11,7 @@ add_executable(crdr main.c
         shapes/vertex.c
         shapes/shapes.c
         shapes/shapes.status.h
-        shapes/shapes.def.h)
+)
 
 target_link_libraries(crdr user32)
 

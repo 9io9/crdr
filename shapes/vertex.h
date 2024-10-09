@@ -8,8 +8,10 @@
 #include "vertex.def.h"
 #include "vertex.status.h"
 
-extern TriVertexSortStatus TriVertexsYSort(Vertex2D vertexs[3]);
+extern VertexOpStatus TriVertices2DYSort(Vertex2D vertices[3]);
 
-extern TriVertexSortStatus TriVertexsXSort(Vertex2D vertexs[3]);
+extern VertexOpStatus TriVertices2DXSort(Vertex2D vertices[3]);
+
+extern VertexOpStatus TriVertices2DTransform(Vertex2D vertices[3], Vertex2DTransform* trans_type);
 
 #endif //VERTEX_H
